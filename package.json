@@ -1,0 +1,35 @@
+{
+  "name": "arka-simple-validator",
+  "version": "1.0.0",
+  "description": "A simple and lightweight input validation library",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "keywords": [
+    "validation",
+    "validator",
+    "input",
+    "form",
+    "typescript"
+  ],
+  "author": "Eko Salvinus <slvns.dev@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/simple-input-validator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/simple-input-validator/issues"
+  },
+  "homepage": "https://github.com/yourusername/simple-input-validator#readme"
+}
