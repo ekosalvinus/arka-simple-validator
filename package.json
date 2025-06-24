@@ -1,23 +1,15 @@
 {
   "name": "arka-simple-validator",
-  "version": "3.0.0",
-  "description": "A simple and lightweight input validation library",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "version": "1.0.0",
+  "description": "A simple data validator for JavaScript",
+  "main": "index.js",
   "scripts": {
-    "build": "rollup -c",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "prepublishOnly": "npm run test && npm run build"
+    "test": "jest"
   },
   "keywords": [
     "validation",
     "validator",
+    "schema",
     "input",
     "form",
     "typescript"
