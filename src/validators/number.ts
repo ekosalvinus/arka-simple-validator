@@ -1,42 +1,38 @@
-import { ValidationRule } from '../types';
+import { ValidationRule, ValidatorConfig } from '../types';
 
-export const createNumberValidators = (config: any): ValidationRule[] => {
+export function createNumberValidators(config: ValidatorConfig): ValidationRule[] {
   const rules: ValidationRule[] = [];
 
-  // Add a type validation rule to ensure we're working with numbers
+  // Type validation
   rules.push({
-    message: 'Must be a valid number',
-    validate: (value: any) => value === null || value === undefined || 
-              (typeof value === 'number' && !isNaN(value))
+    validate: (value) => {
+      if (value === undefined || value === null) return true;
+      return !isNaN(Number(value));
+    },
+    message: 'Value must be a number'
   });
 
-  if (config.required) {
+  // Minimum value validation
+  if (typeof config.min === 'number') {
     rules.push({
-      message: 'Field is required',
-      validate: (value: any) => value !== null && value !== undefined && 
-                typeof value === 'number' && !isNaN(value)
+      validate: (value) => {
+        if (value === undefined || value === null) return true;
+        return Number(value) >= config.min!;
+      },
+      message: `Minimum value is ${config.min}`
     });
   }
 
-  if (config.min !== undefined) {
+  // Maximum value validation
+  if (typeof config.max === 'number') {
     rules.push({
-      message: `Minimum value is ${config.min}`,
-      validate: (value: any) => 
-        value === null || 
-        value === undefined || 
-        (typeof value === 'number' && !isNaN(value) && value >= config.min)
-    });
-  }
-
-  if (config.max !== undefined) {
-    rules.push({
-      message: `Maximum value is ${config.max}`,
-      validate: (value: any) => 
-        value === null || 
-        value === undefined || 
-        (typeof value === 'number' && !isNaN(value) && value <= config.max)
+      validate: (value) => {
+        if (value === undefined || value === null) return true;
+        return Number(value) <= config.max!;
+      },
+      message: `Maximum value is ${config.max}`
     });
   }
 
   return rules;
-};
+}

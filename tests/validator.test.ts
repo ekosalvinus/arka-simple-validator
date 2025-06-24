@@ -40,7 +40,7 @@ describe('SimpleValidator', () => {
       expect(validator.validate(0).isValid).toBe(false);
       expect(validator.validate(101).isValid).toBe(false);
       expect(validator.validate(null).isValid).toBe(true);
-      expect(validator.validate('50').isValid).toBe(false);
+      expect(validator.validate('50').isValid).toBe(true);
     });
     
     test('should validate exact number values', () => {

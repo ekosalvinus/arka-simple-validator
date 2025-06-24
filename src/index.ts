@@ -72,7 +72,7 @@ export class SimpleValidator {
   }
 }
 
-// ValidatorConfig is imported from './types'
-
+// Export types directly instead of using export *
+export { ValidationResult, ValidatorConfig, ValidationRule } from './types';
 // Export types and utility functions
 export * from './types';

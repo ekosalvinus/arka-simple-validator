@@ -1,8 +1,13 @@
 import { ValidationRule } from '../types';
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export const createEmailValidator = (): ValidationRule => ({
-  message: 'Invalid email format',
-  validate: (value: string) => !value || EMAIL_REGEX.test(value)
-});
+export function createEmailValidator(): ValidationRule {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+  return {
+    validate: (value) => {
+      if (value === undefined || value === null || value === '') return true;
+      return typeof value === 'string' && emailRegex.test(value);
+    },
+    message: 'Invalid email format'
+  };
+}

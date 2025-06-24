@@ -1,11 +1,104 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SimpleValidator = void 0;
-const tslib_1 = require("tslib");
-const string_1 = require("./validators/string");
-const number_1 = require("./validators/number");
-const email_1 = require("./validators/email");
+function createStringValidators(config) {
+    const rules = [];
+    // Required validation
+    if (config.required) {
+        rules.push({
+            validate: (value) => {
+                if (value === undefined || value === null)
+                    return false;
+                if (typeof value === 'string')
+                    return value.trim().length > 0;
+                return true;
+            },
+            message: 'This field is required'
+        });
+    }
+    // Minimum length validation
+    if (typeof config.minLength === 'number') {
+        rules.push({
+            validate: (value) => {
+                if (value === undefined || value === null)
+                    return true;
+                return typeof value === 'string' && value.length >= config.minLength;
+            },
+            message: `Minimum length is ${config.minLength} characters`
+        });
+    }
+    // Maximum length validation
+    if (typeof config.maxLength === 'number') {
+        rules.push({
+            validate: (value) => {
+                if (value === undefined || value === null)
+                    return true;
+                return typeof value === 'string' && value.length <= config.maxLength;
+            },
+            message: `Maximum length is ${config.maxLength} characters`
+        });
+    }
+    // Pattern validation
+    if (config.pattern instanceof RegExp) {
+        rules.push({
+            validate: (value) => {
+                if (value === undefined || value === null)
+                    return true;
+                return typeof value === 'string' && config.pattern.test(value);
+            },
+            message: 'The format is invalid'
+        });
+    }
+    return rules;
+}
+
+function createNumberValidators(config) {
+    const rules = [];
+    // Type validation
+    rules.push({
+        validate: (value) => {
+            if (value === undefined || value === null)
+                return true;
+            return !isNaN(Number(value));
+        },
+        message: 'Value must be a number'
+    });
+    // Minimum value validation
+    if (typeof config.min === 'number') {
+        rules.push({
+            validate: (value) => {
+                if (value === undefined || value === null)
+                    return true;
+                return Number(value) >= config.min;
+            },
+            message: `Minimum value is ${config.min}`
+        });
+    }
+    // Maximum value validation
+    if (typeof config.max === 'number') {
+        rules.push({
+            validate: (value) => {
+                if (value === undefined || value === null)
+                    return true;
+                return Number(value) <= config.max;
+            },
+            message: `Maximum value is ${config.max}`
+        });
+    }
+    return rules;
+}
+
+function createEmailValidator() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return {
+        validate: (value) => {
+            if (value === undefined || value === null || value === '')
+                return true;
+            return typeof value === 'string' && emailRegex.test(value);
+        },
+        message: 'Invalid email format'
+    };
+}
+
 class SimpleValidator {
     constructor(config = {
         pattern: undefined
@@ -19,15 +112,15 @@ class SimpleValidator {
             typeof config.maxLength === 'number' ||
             config.pattern ||
             config.required) {
-            this.rules.push(...(0, string_1.createStringValidators)(config));
+            this.rules.push(...createStringValidators(config));
         }
         // Number validations
         if (typeof config.min === 'number' || typeof config.max === 'number') {
-            this.rules.push(...(0, number_1.createNumberValidators)(config));
+            this.rules.push(...createNumberValidators(config));
         }
         // Email validation
         if (config.email) {
-            this.rules.push((0, email_1.createEmailValidator)());
+            this.rules.push(createEmailValidator());
         }
         // Custom validations
         if (config.custom && Array.isArray(config.custom)) {
@@ -62,8 +155,6 @@ class SimpleValidator {
         });
     }
 }
+
 exports.SimpleValidator = SimpleValidator;
-// ValidatorConfig is imported from './types'
-// Export types and utility functions
-tslib_1.__exportStar(require("./types"), exports);
 //# sourceMappingURL=index.js.map

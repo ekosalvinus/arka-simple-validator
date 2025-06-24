@@ -1,11 +1,11 @@
-export interface ValidationRule {
-  message: string;
-  validate: (value: any) => boolean;
-}
-
 export interface ValidationResult {
   isValid: boolean;
   errors: string[];
+}
+
+export interface ValidationRule {
+  validate: (value: any) => boolean;
+  message: string;
 }
 
 export interface ValidatorConfig {

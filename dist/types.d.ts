@@ -1,10 +1,10 @@
-export interface ValidationRule {
-    message: string;
-    validate: (value: any) => boolean;
-}
 export interface ValidationResult {
     isValid: boolean;
     errors: string[];
+}
+export interface ValidationRule {
+    validate: (value: any) => boolean;
+    message: string;
 }
 export interface ValidatorConfig {
     required?: boolean;
@@ -16,4 +16,3 @@ export interface ValidatorConfig {
     email?: boolean;
     custom?: ValidationRule[];
 }
-//# sourceMappingURL=types.d.ts.map

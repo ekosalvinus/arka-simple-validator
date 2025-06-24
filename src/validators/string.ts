@@ -1,35 +1,52 @@
-import { ValidationRule } from '../types';
+import { ValidationRule, ValidatorConfig } from '../types';
 
-export const createStringValidators = (config: any): ValidationRule[] => {
+export function createStringValidators(config: ValidatorConfig): ValidationRule[] {
   const rules: ValidationRule[] = [];
 
+  // Required validation
   if (config.required) {
     rules.push({
-      message: 'Field is required',
-      validate: (value: any) => value != null && typeof value === 'string' && value.trim().length > 0
+      validate: (value) => {
+        if (value === undefined || value === null) return false;
+        if (typeof value === 'string') return value.trim().length > 0;
+        return true;
+      },
+      message: 'This field is required'
     });
   }
 
-  if (config.minLength !== undefined) {
+  // Minimum length validation
+  if (typeof config.minLength === 'number') {
     rules.push({
-      message: `Minimum length is ${config.minLength}`,
-      validate: (value: any) => !value || typeof value !== 'string' || value.length >= config.minLength
+      validate: (value) => {
+        if (value === undefined || value === null) return true;
+        return typeof value === 'string' && value.length >= config.minLength!;
+      },
+      message: `Minimum length is ${config.minLength} characters`
     });
   }
 
-  if (config.maxLength !== undefined) {
+  // Maximum length validation
+  if (typeof config.maxLength === 'number') {
     rules.push({
-      message: `Maximum length is ${config.maxLength}`,
-      validate: (value: any) => !value || typeof value !== 'string' || value.length <= config.maxLength
+      validate: (value) => {
+        if (value === undefined || value === null) return true;
+        return typeof value === 'string' && value.length <= config.maxLength!;
+      },
+      message: `Maximum length is ${config.maxLength} characters`
     });
   }
 
-  if (config.pattern) {
+  // Pattern validation
+  if (config.pattern instanceof RegExp) {
     rules.push({
-      message: 'Invalid format',
-      validate: (value: any) => !value || typeof value !== 'string' || config.pattern.test(value)
+      validate: (value) => {
+        if (value === undefined || value === null) return true;
+        return typeof value === 'string' && config.pattern!.test(value);
+      },
+      message: 'The format is invalid'
     });
   }
 
   return rules;
-};
+}

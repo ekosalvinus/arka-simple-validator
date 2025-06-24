@@ -9,5 +9,5 @@ export declare class SimpleValidator {
     static string(minLength?: number, maxLength?: number): SimpleValidator;
     static number(min?: number, max?: number): SimpleValidator;
 }
+export { ValidationResult, ValidatorConfig, ValidationRule } from './types';
 export * from './types';
-//# sourceMappingURL=index.d.ts.map
